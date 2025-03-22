@@ -120,8 +120,7 @@ app.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'El usuario ya existe' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
+    const user = new User({ username, password });
     await user.save();
     
     res.status(201).json({ message: '✅ Usuario registrado' });
