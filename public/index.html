@@ -10,8 +10,8 @@
     <input type="text" id="username" placeholder="Usuario" required>
     <input type="password" id="password" placeholder="Contraseña" required>
     <div class="auth-buttons">
-      <button onclick="register()">Registrarse</button>
-      <button onclick="login()">Iniciar Sesión</button>
+      <button id="registerBtn">Registrarse</button>
+      <button id="loginBtn">Iniciar Sesión</button>
     </div>
   </div>
 
@@ -19,166 +19,32 @@
     <div class="header">
       <h1>Chat Seguro 🔒</h1>
       <div class="header-buttons">
-        <button onclick="showPasswordModal()">Cambiar Contraseña</button>
-        <button onclick="logout()">Cerrar Sesión</button>
+        <button id="changePassBtn">Cambiar Contraseña</button>
+        <button id="logoutBtn">Cerrar Sesión</button>
       </div>
     </div>
     
     <ul id="messages"></ul>
     
-    <form id="form">
-      <input id="input" placeholder="Escribe tu mensaje..." autocomplete="off" />
-      <button>Enviar</button>
+    <form id="messageForm">
+      <input id="messageInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
+      <button type="submit">Enviar</button>
     </form>
   </div>
 
   <!-- Modal para cambiar contraseña -->
   <div id="passwordModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="hidePasswordModal()">&times;</span>
+      <span class="close" id="closeModal">&times;</span>
       <h3>Cambiar Contraseña</h3>
       <input type="password" id="currentPassword" placeholder="Contraseña actual">
       <input type="password" id="newPassword" placeholder="Nueva contraseña">
-      <button onclick="changePassword()">Cambiar</button>
+      <button id="confirmChangePass">Cambiar</button>
       <p id="passwordError" class="error-message"></p>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    let userId;
-    let socket;
-
-    async function checkAuth() {
-      try {
-        const response = await fetch('/check-auth');
-        if (response.status === 200) {
-          const data = await response.json();
-          userId = data.userId;
-          document.getElementById('authContainer').style.display = 'none';
-          document.getElementById('chatContainer').style.display = 'block';
-          initializeChat();
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    async function register() {
-    try {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      
-      const response = await fetch('https://chatus-production.up.railway.app/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // <- Añadido para cookies
-        body: JSON.stringify({ username, password })
-      });
-      
-      const data = await response.json();
-      if (response.ok) {
-        alert('✅ Registro exitoso');
-      } else {
-        alert(`❌ Error: ${data.error || 'Desconocido'}`); // <- Muestra error del backend
-      }
-    } catch (error) {
-      alert('🚨 Error de red: ' + error.message);
-    }
-  }
-
-  async function login() {
-    try {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      
-      const response = await fetch('https://chatus-production.up.railway.app/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // <- Añadido para cookies
-        body: JSON.stringify({ username, password })
-      });
-      
-      if (response.ok) {
-        checkAuth();
-      } else {
-        const data = await response.json();
-        alert(`🔐 Error: ${data.error || 'Credenciales incorrectas'}`);
-      }
-    } catch (error) {
-      alert('🚨 Error de red: ' + error.message);
-    }
-  }
-
-  function initializeChat() {
-    // Conexión explícita a Socket.IO
-    socket = io("https://chatus-production.up.railway.app", {
-      withCredentials: true, // <- Añadido
-      transports: ['websocket'] // <- Fuerza WebSockets
-    });
-
-      DOM.form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = DOM.input.value.trim();
-        if (message) {
-          socket.emit('chat message', message);
-          DOM.input.value = '';
-        }
-      });
-
-      socket.on('chat message', (data) => {
-        const li = document.createElement('li');
-        li.className = data.uid === userId ? 'own-message' : 'other-message';
-        li.innerHTML = `
-          <div class="message-container">
-            <strong>${data.user}:</strong>
-            <div class="message-content">${data.text}</div>
-          </div>
-        `;
-        DOM.messages.appendChild(li);
-        DOM.messages.scrollTop = DOM.messages.scrollHeight;
-      });
-    }
-
-    async function logout() {
-      await fetch('/logout', { method: 'POST' });
-      window.location.reload();
-    }
-
-    function showPasswordModal() {
-      document.getElementById('passwordModal').style.display = 'block';
-    }
-
-    function hidePasswordModal() {
-      document.getElementById('passwordModal').style.display = 'none';
-      document.getElementById('passwordError').textContent = '';
-    }
-
-    async function changePassword() {
-      const current = document.getElementById('currentPassword').value;
-      const newPass = document.getElementById('newPassword').value;
-      
-      if (!current || !newPass) {
-        document.getElementById('passwordError').textContent = 'Ambos campos son requeridos';
-        return;
-      }
-
-      const response = await fetch('/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentPassword: current, newPassword: newPass })
-      });
-
-      if (response.ok) {
-        alert('✅ Contraseña cambiada');
-        hidePasswordModal();
-      } else {
-        const error = await response.json();
-        document.getElementById('passwordError').textContent = error.error;
-      }
-    }
-
-    checkAuth();
-  </script>
+  <script src="/script.js"></script>
 </body>
 </html>

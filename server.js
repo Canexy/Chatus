@@ -61,7 +61,20 @@ const io = new Server(server, {
 // =============================================
 //               MIDDLEWARES
 // =============================================
-app.use(helmet());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(), // Mantener políticas por defecto
+        "script-src": ["'self'", "'unsafe-inline'"], // Permitir scripts inline
+        "script-src-attr": ["'self'", "'unsafe-inline'"] // Permitir event handlers
+      }
+    },
+    crossOriginEmbedderPolicy: false // Necesario para Socket.IO
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
