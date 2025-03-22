@@ -44,7 +44,9 @@ const server = http.createServer(app);
 app.use(cors({
   origin: "https://chatus-production.up.railway.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true // <- Permite cookies
+  
 }));
 
 // Configuración Socket.IO
