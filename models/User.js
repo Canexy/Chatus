@@ -6,9 +6,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true }
 });
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 10);
+  
+  this.password = await bcrypt.hash(this.password, 10); // Salt incluido
   next();
 });
 

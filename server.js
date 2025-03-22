@@ -1,3 +1,4 @@
+import MongoStore from 'connect-mongo';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -18,6 +19,10 @@ const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGODB_URI, // Usa tu variable de entorno
+    ttl: 86400 // Sesiones expiran en 1 día
+  }),
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax'
@@ -57,6 +62,16 @@ const io = new Server(server, {
     credentials: true
   }
 });
+
+// Antes de los middlewares:
+app.set('trust proxy', 1); // Confía en el proxy de Railway
+
+// Modifica el rate limiter:
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  validate: { trustProxy: true } // ✅ Considera IPs reales
+}));
 
 // =============================================
 //               MIDDLEWARES
