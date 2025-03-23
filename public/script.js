@@ -161,6 +161,7 @@ async function changePassword() {
     if (response.ok) {
       alert('✅ Contraseña cambiada');
       hidePasswordModal();
+      window.location.reload();
     } else {
       const error = await response.json();
       DOM.passwordError.textContent = error.error;
