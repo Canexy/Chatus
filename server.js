@@ -12,6 +12,13 @@ import cors from 'cors'; // <- Añadido
 import User from './models/User.js'; // <- Añadido (¡verifica la ruta!)
 import Message from './models/Message.js'; // <- Añadido
 
+
+// Cap de mensajes.
+
+const MAX_MESSAGES = process.env.MAX_MESSAGES || 50;
+console.log("Límite configurado:", MAX_MESSAGES);
+// Depuración mensajes.
+
 // =============================================
 //           CONFIGURACIÓN DE SESIÓN
 // =============================================
@@ -283,8 +290,17 @@ io.on('connection', (socket) => {
         user: user._id,
         text: sanitizedMsg
       });
-
       await newMessage.save();
+
+      const totalMessages = await Message.countDocuments();
+
+      if (totalMessages > MAX_MESSAGES) {
+        await Message.deleteOne(
+          {}, 
+          { sort: { createdAt: 1 } 
+        });
+      }
+
       io.emit('chat message', {
         uid: user._id,
         user: user.username,
