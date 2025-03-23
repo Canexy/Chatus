@@ -171,7 +171,7 @@ async function changePassword() {
   }
 }
 
-// ================= HELPERS =================
+// ================= HELPERS ================
 function toggleUI(isLoggedIn) {
   DOM.authContainer.style.display = isLoggedIn ? 'none' : 'block';
   DOM.chatContainer.style.display = isLoggedIn ? 'block' : 'none';
