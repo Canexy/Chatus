@@ -202,7 +202,16 @@ app.post('/change-username', async (req, res) => {
       username: newUsername 
     });
 
-    res.json({ message: '✅ Nombre actualizado' });
+
+    // Destruir sesión
+    req.session.destroy(err => {
+      if (err) {
+        console.error("Error al destruir sesión:", err);
+        return res.status(500).json({ error: 'Error en el servidor' });
+      }
+      res.clearCookie('connect.sid'); // Eliminar cookie de sesión
+      res.json({ message: '✅ Nombre actualizado. Vuelve a iniciar sesión' });
+    });
     
   } catch (error) {
     console.error("Error al cambiar nombre:", error);

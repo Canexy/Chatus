@@ -199,13 +199,14 @@ async function changeUsername() {
     const response = await fetch('/change-username', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include', // Añadir esta línea
       body: JSON.stringify({ newUsername: newName })
     });
 
     if (response.ok) {
-      alert('✅ Nombre actualizado');
+      alert('✅ Nombre actualizado. Vuelve a iniciar sesión');
       hideNameModal();
-      window.location.reload(); // Recarga para aplicar cambios
+      window.location.reload();
     } else {
       const error = await response.json();
       DOM.nameError.textContent = error.error;
