@@ -14,7 +14,10 @@ const DOM = {
   passwordModal: document.getElementById('passwordModal'),
   currentPassword: document.getElementById('currentPassword'),
   newPassword: document.getElementById('newPassword'),
-  passwordError: document.getElementById('passwordError')
+  passwordError: document.getElementById('passwordError'),
+  nameModal: document.getElementById('nameModal'),
+  newUsername: document.getElementById('newUsername'),
+  nameError: document.getElementById('nameError')
 };
 
 // Event Listeners
@@ -23,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('registerBtn').addEventListener('click', register);
   document.getElementById('loginBtn').addEventListener('click', login);
   document.getElementById('logoutBtn').addEventListener('click', logout);
+  document.getElementById('changeNameBtn').addEventListener('click', showNameModal);
+  document.getElementById('closeNameModal').addEventListener('click', hideNameModal);
+  document.getElementById('confirmChangeName').addEventListener('click', changeUsername);
   
   // Chat
   DOM.messageForm.addEventListener('submit', handleMessageSubmit);
@@ -170,6 +176,45 @@ async function changePassword() {
     DOM.passwordError.textContent = 'Error de conexión';
   }
 }
+
+
+function showNameModal() {
+  DOM.nameModal.style.display = 'block';
+}
+
+function hideNameModal() {
+  DOM.nameModal.style.display = 'none';
+  DOM.nameError.textContent = '';
+}
+
+async function changeUsername() {
+  const newName = DOM.newUsername.value.trim();
+  
+  if (!newName) {
+    DOM.nameError.textContent = 'El nombre no puede estar vacío';
+    return;
+  }
+
+  try {
+    const response = await fetch('/change-username', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newUsername: newName })
+    });
+
+    if (response.ok) {
+      alert('✅ Nombre actualizado');
+      hideNameModal();
+      window.location.reload(); // Recarga para aplicar cambios
+    } else {
+      const error = await response.json();
+      DOM.nameError.textContent = error.error;
+    }
+  } catch (error) {
+    DOM.nameError.textContent = 'Error de conexión';
+  }
+}
+
 
 // ================= HELPERS ================
 function toggleUI(isLoggedIn) {

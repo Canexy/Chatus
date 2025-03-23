@@ -180,6 +180,37 @@ app.post('/change-password', async (req, res) => {
   }
 });
 
+
+app.post('/change-username', async (req, res) => {
+  if (!req.session.userId) return res.status(401).json({ error: 'No autorizado' });
+
+  const { newUsername } = req.body;
+  try {
+    // Verificar si el nombre ya existe
+    const existingUser = await User.findOne({ username: newUsername });
+    if (existingUser) {
+      return res.status(400).json({ error: 'El nombre ya está en uso' });
+    }
+
+    // Verifica que el nombre sea de al menos 3 caracteres.
+    if (newUsername.length < 3) {
+      return res.status(400).json({ error: 'Mínimo 3 caracteres' });
+    }
+
+    // Actualizar nombre
+    await User.findByIdAndUpdate(req.session.userId, { 
+      username: newUsername 
+    });
+
+    res.json({ message: '✅ Nombre actualizado' });
+    
+  } catch (error) {
+    console.error("Error al cambiar nombre:", error);
+    res.status(500).json({ error: 'Error al actualizar nombre' });
+  }
+});
+
+
 app.post('/logout', (req, res) => {
   req.session.destroy();
   res.sendStatus(200);

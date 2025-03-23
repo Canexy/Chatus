@@ -20,6 +20,7 @@
       <h1>Chat Seguro 🔒</h1>
       <div class="header-buttons">
         <button id="changePassBtn">Cambiar Contraseña</button>
+        <button id="changeNameBtn">Cambiar Nombre</button>
         <button id="logoutBtn">Cerrar Sesión</button>
       </div>
     </div>
@@ -30,6 +31,17 @@
       <input id="messageInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
       <button type="submit">Enviar</button>
     </form>
+  </div>
+
+<!-- Modal para cambiar nombre -->
+  <div id="nameModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeNameModal">&times;</span>
+      <h3>Cambiar Nombre de Usuario</h3>
+      <input type="text" id="newUsername" placeholder="Nuevo nombre de usuario">
+      <button id="confirmChangeName">Cambiar</button>
+      <p id="nameError" class="error-message"></p>
+    </div>
   </div>
 
   <!-- Modal para cambiar contraseña -->
