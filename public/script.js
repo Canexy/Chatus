@@ -20,6 +20,13 @@ const DOM = {
   nameError: document.getElementById('nameError')
 };
 
+window.addEventListener('unhandledrejection', (event) => {
+  if (event.reason instanceof Response && event.reason.status === 401) {
+    toggleUI(false);
+    alert("Sesión expirada. Vuelve a iniciar sesión");
+  }
+});
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
   // Autenticación
@@ -46,6 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
 async function checkAuth() {
   try {
     const response = await fetch('/check-auth');
+    
+    if (response.status === 401) {
+      toggleUI(false);
+      return;
+    }
+
     if (response.ok) {
       const data = await response.json();
       userId = data.userId;
@@ -53,6 +66,7 @@ async function checkAuth() {
       initializeChat();
     }
   } catch (error) {
+    toggleUI(false);
     console.error('Error checking auth:', error);
   }
 }

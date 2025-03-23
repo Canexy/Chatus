@@ -29,6 +29,21 @@ const sessionMiddleware = session({
   }
 });
 
+const verifyUserExists = async (req, res, next) => {
+  if (!req.session.userId) return res.status(401).json({ error: "No autorizado" });
+
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.session.destroy();
+      return res.status(401).json({ error: "Usuario eliminado" });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({ error: "Error del servidor" });
+  }
+};
+
 // =============================================
 //          CONEXIÓN A MONGODB ATLAS
 // =============================================
@@ -152,7 +167,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/change-password', async (req, res) => {
+app.post('/change-password', verifyUserExists, async (req, res) => {
   if (!req.session.userId) return res.status(401).json({ error: 'No autorizado' });
   
   const { currentPassword, newPassword } = req.body;
@@ -181,7 +196,7 @@ app.post('/change-password', async (req, res) => {
 });
 
 
-app.post('/change-username', async (req, res) => {
+app.post('/change-username', verifyUserExists, async (req, res) => {
   if (!req.session.userId) return res.status(401).json({ error: 'No autorizado' });
 
   const { newUsername } = req.body;
@@ -225,11 +240,27 @@ app.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/check-auth', (req, res) => {
-  res.status(req.session.userId ? 200 : 401).json({
-    isAuthenticated: !!req.session.userId,
-    userId: req.session.userId
-  });
+app.get('/check-auth', async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ isAuthenticated: false });
+  }
+
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.session.destroy();
+      return res.status(401).json({ isAuthenticated: false });
+    }
+
+    res.json({ 
+      isAuthenticated: true,
+      userId: user._id,
+      username: user.username // Opcional: envía el nombre actualizado
+    });
+    
+  } catch (error) {
+    res.status(500).json({ error: "Error del servidor" });
+  }
 });
 
 // =============================================
