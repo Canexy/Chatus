@@ -153,20 +153,30 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/change-password', async (req, res) => {
-  if (!req.session.userId) return res.status(401).send('No autorizado');
+  if (!req.session.userId) return res.status(401).json({ error: 'No autorizado' });
   
   const { currentPassword, newPassword } = req.body;
   try {
     const user = await User.findById(req.session.userId);
-    if (!await bcrypt.compare(currentPassword, user.password)) {
+    
+    // Usa el método del modelo para comparar contraseñas
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
       return res.status(401).json({ error: 'Contraseña actual incorrecta' });
     }
     
-    user.password = await bcrypt.hash(newPassword, 10);
+    // Asigna la nueva contraseña en texto plano (el pre-save hook la hasheará)
+    user.password = newPassword;
     await user.save();
-    res.json({ message: '✅ Contraseña actualizada' });
+    
+    // Destruye la sesión para forzar re-login
+    req.session.destroy();
+    
+    res.json({ message: '✅ Contraseña actualizada. Vuelve a iniciar sesión' });
+    
   } catch (error) {
-    res.status(500).json({ error: '🚨 Error al cambiar contraseña' });
+    console.error("Error en cambio de contraseña:", error);
+    res.status(500).json({ error: 'Error al cambiar contraseña' });
   }
 });
 
