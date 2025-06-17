@@ -1,0 +1,106 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body, html {
+  background-color: #18181b;
+  color: #e5e7eb;
+}
+
+.container, .max-w-md, .bg-white, .bg-gray-100, .bg-gray-200, .bg-blue-600, .bg-yellow-500, .bg-red-500, .bg-green-100, .bg-red-100, .bg-gray-500, .bg-gray-600, .bg-blue-700, .bg-blue-500, .bg-blue-700, .bg-gray-400, .bg-gray-800, .bg-gray-700, .bg-gray-900, .bg-white.rounded-lg.shadow-xl {
+  background-color: #23232a !important;
+  color: #e5e7eb !important;
+}
+
+input, textarea, select {
+  background-color: #23232a;
+  color: #e5e7eb;
+  border: 1px solid #333;
+}
+
+button {
+  background-color: #333;
+  color: #e5e7eb;
+}
+
+.bg-blue-600 {
+  background-color: #2563eb !important;
+}
+.bg-yellow-500 {
+  background-color: #eab308 !important;
+}
+.bg-red-500 {
+  background-color: #ef4444 !important;
+}
+.bg-green-100 {
+  background-color: #166534 !important;
+  color: #d1fae5 !important;
+}
+.bg-red-100 {
+  background-color: #7f1d1d !important;
+  color: #fecaca !important;
+}
+.bg-gray-200 {
+  background-color: #27272a !important;
+}
+.bg-white {
+  background-color: #23232a !important;
+}
+.text-blue-600 {
+  color: #60a5fa !important;
+}
+.text-red-600 {
+  color: #f87171 !important;
+}
+.text-green-700 {
+  color: #34d399 !important;
+}
+.text-gray-700, .text-gray-800, .text-gray-500, .text-gray-600, .text-gray-900 {
+  color: #d1d5db !important;
+}
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #2563eb;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  background: #23232a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}

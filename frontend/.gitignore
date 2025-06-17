@@ -1,0 +1,29 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencias
+/node_modules
+/.pnp
+.pnp.js
+
+# Variables de entorno y archivos sensibles
+.env.local
+.env.*
+
+# Testing
+/coverage
+
+# Producción
+/build
+
+# Archivos de sistema
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Carpetas de IDE
+.vscode/
+.idea/

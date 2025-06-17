@@ -1,0 +1,64 @@
+# Descripción y Estado del Proyecto: Chat en Tiempo Real (React + Supabase + Node.js/Socket.IO)
+
+## Resumen del Proyecto
+Este proyecto es una aplicación de chat en tiempo real que utiliza React para el frontend, Supabase como backend de autenticación y base de datos, y Node.js/Socket.IO para la comunicación en tiempo real. Incluye funcionalidades de administración, tema oscuro, y control de seguridad avanzado.
+
+---
+
+## Funcionalidades Implementadas
+- **Autenticación**: Login y recuperación de contraseña por usuario o email.
+- **Chat en tiempo real**: Comunicación instantánea entre usuarios usando Socket.IO.
+- **Reconexión automática**: El chat es tolerante a desconexiones y cambios de pestaña.
+- **Gestión de perfiles**: Creación y edición de perfil, cambio de nombre de usuario, campo email en perfiles.
+- **Administración**: Menú solo visible para admin (`is_admin` en `profiles`), con funciones de borrar todos los mensajes y resetear IDs (solo admin, seguro vía RPC y RLS).
+- **Tema oscuro**: Aplicado globalmente en el frontend.
+- **Seguridad**: Funciones críticas protegidas por RLS y validaciones en frontend/backend.
+- **Exposición temporal de `supabase`**: Para pruebas, luego eliminado.
+- **Limpieza de código**: Eliminada lógica antigua de recuperación de contraseña y código innecesario.
+- **Documentación**: Instrucciones de despliegue y buenas prácticas.
+
+---
+
+## Tareas Pendientes
+- Forzar limpieza de chat en todos los clientes cuando el admin borre todos los mensajes (de forma robusta).
+- Reimplementar la funcionalidad de cambio de contraseña de forma segura y funcional.
+- Mejorar feedback visual, validaciones y tests automáticos.
+- Eliminar logs de backend para producción cuando ya no sean necesarios.
+- Mantener actualizado el documento de despliegue y seguridad.
+
+---
+
+## Estructura del Proyecto
+- `backend/`: Servidor Node.js con Socket.IO y lógica de API.
+- `frontend/`: Aplicación React, componentes, estilos y lógica de autenticación.
+- `supabase/`: Migraciones SQL y documentación de funciones RPC y políticas RLS.
+
+---
+
+## Seguridad y Buenas Prácticas
+- Archivos sensibles (`.env`, `.env.local`) están en `.gitignore` y no deben subirse a GitHub.
+- Variables de entorno deben configurarse en los servicios de despliegue (Render, Vercel, Netlify).
+- El backend puede mantenerse privado, el frontend puede ser público.
+
+---
+
+## Despliegue
+- **Backend**: Render (subir solo `backend/`, configurar variables de entorno).
+- **Frontend**: Vercel o Netlify (subir solo `frontend/`, configurar variables de entorno).
+- **Supabase**: Aplicar migraciones y configurar políticas desde la consola web.
+
+---
+
+## Cómo Compartir o Continuar el Proyecto
+- Compartir este documento y el archivo `DEPLOYMENT_INSTRUCTIONS.txt`.
+- Indicar el estado actual, tareas pendientes y cualquier información relevante sobre claves o configuraciones.
+- Recomendar la revisión de seguridad antes de publicar en producción.
+
+---
+
+## Contacto y Soporte
+Para dudas técnicas o traspaso del proyecto, dejar claro el punto de contacto y el estado de las claves/configuraciones.
+
+---
+
+> Documento generado automáticamente para facilitar el traspaso y la continuidad del proyecto.
