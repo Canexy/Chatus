@@ -1,7 +1,7 @@
-# ChatUs - Chat en tiempo real (React + Supabase + Node.js)
+# Chatus - Chat en tiempo real (React + Supabase + Node.js)
 
-## ¿Qué es ChatUs?
-ChatUs es una aplicación de chat en tiempo real con autenticación, administración y control de mensajes, desarrollada con React (frontend), Supabase (backend y base de datos) y Node.js/Socket.IO (servidor de sockets).
+## ¿Qué es Chatus?
+Chatus es una aplicación de chat en tiempo real con autenticación, administración y control de mensajes, desarrollada con React (frontend), Supabase (backend y base de datos) y Node.js/Socket.IO (servidor de sockets).
 
 ---
 
@@ -36,7 +36,6 @@ ChatUs es una aplicación de chat en tiempo real con autenticación, administrac
 ## Estructura del proyecto
 - `frontend/` - React app (interfaz de usuario)
 - `backend/` - Servidor Node.js/Socket.IO
-- `supabase/` - SQL, funciones y políticas de la base de datos
 
 ---
 
