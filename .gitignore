@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Ignora coverage de tests
 coverage/
+
+# SQL, funciones, triggers, índices y políticas
+INFO_SUPABASE.txt
