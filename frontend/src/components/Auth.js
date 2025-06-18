@@ -63,23 +63,6 @@ export default function Auth() {
           password
         });
         if (error) throw error;
-        // Tras login exitoso, crear perfil si no existe
-        if (data && data.user) {
-          const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('user_id')
-            .eq('user_id', data.user.id)
-            .maybeSingle();
-          if (!profile) {
-            const storedUsername = localStorage.getItem('pending_username') || data.user.email.split('@')[0];
-            await supabase.from('profiles').insert({
-              user_id: data.user.id,
-              username: storedUsername,
-              email: data.user.email
-            });
-            localStorage.removeItem('pending_username');
-          }
-        }
       } else {
         // Validar nombre de usuario antes de registrar
         if (username) {
@@ -111,32 +94,6 @@ export default function Auth() {
       setLoading(false);
     }
   };
-
-  // Modificado: crear perfil con email al primer login si no existe
-  useEffect(() => {
-    const createProfileIfNotExists = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { user } = session;
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('user_id')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        if (!profile) {
-          // Crear perfil con email y username por defecto
-          const username = user.email.split('@')[0];
-          await supabase.from('profiles').insert({
-            user_id: user.id,
-            username,
-            email: user.email
-          });
-        }
-      }
-    };
-
-    createProfileIfNotExists();
-  }, []);
 
   // Modificado: recuperación de contraseña por usuario o email
   const handleResetPassword = async (e) => {
@@ -232,11 +189,13 @@ export default function Auth() {
             </div>
           )}
           <div className="mb-4">
-            <label htmlFor="identifier" className="block text-gray-700 mb-2">Usuario o email</label>
+            <label htmlFor="identifier" className="block text-gray-700 mb-2">
+              {isLogin ? 'Usuario o email' : 'Email'}
+            </label>
             <input
               id="identifier"
-              type="text"
-              placeholder="Usuario o email"
+              type={isLogin ? 'text' : 'email'}
+              placeholder={isLogin ? 'Usuario o email' : 'Email'}
               value={identifier}
               onChange={e => setIdentifier(e.target.value)}
               className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"

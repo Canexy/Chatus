@@ -37,28 +37,6 @@ function App() {
     };
   }, []);
 
-  // Nuevo efecto: crear perfil si no existe y hay sesión activa
-  useEffect(() => {
-    const createProfileIfMissing = async () => {
-      if (session?.user?.id) {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('user_id')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        if (!profile) {
-          const storedUsername = localStorage.getItem('pending_username') || session.user.email.split('@')[0];
-          await supabase.from('profiles').insert({
-            user_id: session.user.id,
-            username: storedUsername
-          });
-          localStorage.removeItem('pending_username');
-        }
-      }
-    };
-    createProfileIfMissing();
-  }, [session]);
-
   // Renderizar contenido basado en el estado
   if (isCheckingSession) {
     return (

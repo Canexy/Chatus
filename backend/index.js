@@ -15,7 +15,7 @@ app.get('/ping', (req, res) => res.send('pong'));
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://chatus-one.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true
   }
