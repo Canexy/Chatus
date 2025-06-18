@@ -1,14 +1,16 @@
+
 # Chatus - Chat en Tiempo Real (React + Supabase + Node.js/Socket.IO)
 
 ## Descripción
-Chatus es una aplicación de chat en tiempo real que permite a los usuarios registrarse, iniciar sesión, chatear, y administrar mensajes. El proyecto está construido con React en el frontend, Supabase como backend de autenticación y base de datos, y Node.js/Socket.IO para la comunicación en tiempo real.
+Chatus es una aplicación de chat en tiempo real que permite a los usuarios registrarse, iniciar sesión, chatear y administrar mensajes. El proyecto está construido con React en el frontend, Supabase como backend de autenticación y base de datos, y Node.js/Socket.IO para la comunicación en tiempo real.
 
 ---
 
 ## Componentes del Proyecto
 - **frontend/**: Aplicación React (componentes: Auth, Chat, Profile, ResetPassword, etc.)
 - **backend/**: Servidor Node.js con Express y Socket.IO para la lógica de chat y autenticación de sockets.
-- **INFO_SUPABASE.txt**: Archivo orientativo con la estructura y políticas de la base de datos. La configuración avanzada (migraciones, triggers, RLS, funciones) se gestiona directamente en la consola web de Supabase.
+
+> Nota: La documentación avanzada de la base de datos, despliegue y estado del proyecto se gestiona como archivos personales y no está incluida en el repositorio público. Si necesitas detalles sobre migraciones, políticas RLS, instrucciones de despliegue o estado del proyecto, contacta con el responsable del repositorio.
 
 ---
 
@@ -53,9 +55,8 @@ Actualmente, no hay errores conocidos ni problemas críticos pendientes.
 - Backend desplegado en Render, frontend en Vercel.
 - Variables de entorno configuradas en los servicios de despliegue.
 - Archivos sensibles (`.env`, `.env.local`) están en `.gitignore` y no se suben a GitHub.
-- Documentación de despliegue y seguridad disponible en `DEPLOYMENT_INSTRUCTIONS.txt` y `PROJECT_STATUS_AND_INFO.txt`.
 
 ---
 
 ## Contacto y Soporte
-Para dudas técnicas, traspaso o soporte, consulta el documento `PROJECT_STATUS_AND_INFO.txt` para información de contacto y estado de claves/configuraciones.
+Para dudas técnicas, traspaso o soporte, contacta con el responsable del repositorio para obtener la documentación avanzada o instrucciones de despliegue.
