@@ -109,18 +109,5 @@ module.exports = (io, supabase) => {
     socket.on('error', (error) => {
       console.error(`Error en socket de ${socket.user?.email || 'Desconocido'}:`, error);
     });
-    
-    // Cerrar conexiones inactivas después de 1 minuto
-    const inactivityTimer = setTimeout(() => {
-      if (socket.connected) {
-        console.log(`Cerrando conexión inactiva de ${socket.user?.email || 'Desconocido'}`);
-        socket.disconnect();
-      }
-    }, 60000); // 1 minuto
-    
-    // Limpiar timer al desconectar
-    socket.on('disconnect', () => {
-      clearTimeout(inactivityTimer);
-    });
   });
 };

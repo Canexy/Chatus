@@ -26,7 +26,7 @@ Sube la carpeta `frontend/` a Vercel o Netlify. Estas plataformas son ideales pa
 No necesitas subir carpetas directamente a Supabase, ya que este servicio gestiona la base de datos y las funciones RPC desde su consola web.
 
 - **Acciones necesarias**:
-  - Asegúrate de que las migraciones en `supabase/migrations/` estén aplicadas en tu instancia de Supabase.
+  - Asegúrate de que las migraciones y configuraciones estén aplicadas en tu instancia de Supabase (ver `info_supabase.txt` como referencia orientativa).
   - Configura las políticas de seguridad (RLS) y las funciones RPC desde la consola de Supabase.
 
 ---
@@ -57,7 +57,7 @@ No necesitas subir carpetas directamente a Supabase, ya que este servicio gestio
 - Configura las variables de entorno en Vercel/Netlify basándote en el archivo `.env.local`.
 
 ### 3. Configurar Supabase:
-- Aplica las migraciones desde `supabase/migrations/` en la consola de Supabase.
+- Aplica las migraciones y configuraciones desde la consola de Supabase (ver `info_supabase.txt` como referencia).
 - Verifica las políticas RLS y las funciones RPC.
 
 ### 4. Probar el Proyecto:

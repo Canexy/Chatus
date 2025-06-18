@@ -82,9 +82,6 @@ export default function Auth() {
           }
         });
         if (signUpError) throw signUpError;
-        // Guardar el username y el email elegido para usarlo tras la confirmación y primer login
-        localStorage.setItem('pending_username', username || identifier.split('@')[0]);
-        localStorage.setItem('pending_email', identifier);
         alert('¡Registro exitoso! Por favor verifica tu email.');
       }
     } catch (err) {

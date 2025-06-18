@@ -18,7 +18,11 @@ const io = new Server(httpServer, {
     origin: ["http://localhost:3000", "https://chatus-one.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true
-  }
+  },
+  // Heartbeat: controla la frecuencia de ping/pong para mantener la conexión viva
+  // Puedes cambiar estos valores según tus necesidades
+  pingInterval: 25000, // cada 25 segundos el servidor envía un ping
+  pingTimeout: 5000    // espera 5 segundos la respuesta pong antes de cerrar la conexión
 });
 
 io.use(async (socket, next) => {

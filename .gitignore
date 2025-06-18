@@ -26,4 +26,6 @@ yarn-error.log*
 coverage/
 
 # SQL, funciones, triggers, índices y políticas
-INFO_SUPABASE.txt
+info_supabase.txt
+deployment_instructions.txt
+project_status.txt
