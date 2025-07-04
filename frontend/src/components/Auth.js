@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 
 export default function Auth() {
-  const [identifier, setIdentifier] = useState(''); // Puede ser usuario o email
+  const [identifier, setIdentifier] = useState(''); // Solo email
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
@@ -47,19 +47,11 @@ export default function Auth() {
     setError('');
     try {
       if (isLogin) {
-        let emailToLogin = identifier;
         if (!identifier.includes('@')) {
-          // Buscar email por username en profiles
-          const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('email')
-            .eq('username', identifier)
-            .maybeSingle();
-          if (!profile || !profile.email) throw new Error('Usuario no encontrado');
-          emailToLogin = profile.email;
+          throw new Error('Debes iniciar sesión con tu correo electrónico.');
         }
         const { data, error } = await supabase.auth.signInWithPassword({
-          email: emailToLogin,
+          email: identifier,
           password
         });
         if (error) throw error;
@@ -99,18 +91,10 @@ export default function Auth() {
     setResetSent(false);
     setLoading(true);
     try {
-      let emailToReset = identifier;
       if (!identifier.includes('@')) {
-        // Buscar email por username en profiles
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('email')
-          .eq('username', identifier)
-          .maybeSingle();
-        if (!profile || !profile.email) throw new Error('Usuario no encontrado');
-        emailToReset = profile.email;
+        throw new Error('Debes ingresar tu correo electrónico para recuperar la contraseña.');
       }
-      const { error } = await supabase.auth.resetPasswordForEmail(emailToReset, {
+      const { error } = await supabase.auth.resetPasswordForEmail(identifier, {
         redirectTo: window.location.origin
       });
       if (error) throw error;
@@ -138,11 +122,11 @@ export default function Auth() {
       {showReset ? (
         <form onSubmit={handleResetPassword}>
           <div className="mb-4">
-            <label htmlFor="identifier" className="block text-gray-700 mb-2">Usuario o email</label>
+            <label htmlFor="identifier" className="block text-gray-700 mb-2">Correo electrónico</label>
             <input
               id="identifier"
-              type="text"
-              placeholder="Usuario o email"
+              type="email"
+              placeholder="Correo electrónico"
               value={identifier}
               onChange={e => setIdentifier(e.target.value)}
               className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -187,12 +171,12 @@ export default function Auth() {
           )}
           <div className="mb-4">
             <label htmlFor="identifier" className="block text-gray-700 mb-2">
-              {isLogin ? 'Usuario o email' : 'Email'}
+              Email
             </label>
             <input
               id="identifier"
-              type={isLogin ? 'text' : 'email'}
-              placeholder={isLogin ? 'Usuario o email' : 'Email'}
+              type="email"
+              placeholder="Email"
               value={identifier}
               onChange={e => setIdentifier(e.target.value)}
               className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -236,7 +220,7 @@ export default function Auth() {
       </div>
       {isLogin && (
         <div className="mt-4 text-yellow-700 bg-yellow-100 p-2 rounded text-sm">
-          Puedes iniciar sesión con tu usuario o email. Si cambias tu nombre de usuario, recuerda el nuevo para futuros accesos.
+          Sólo puedes iniciar sesión con tu correo electrónico. Si cambias tu nombre de usuario, tu acceso seguirá siendo por email.
         </div>
       )}
       {!isLogin && (
